@@ -1,10 +1,27 @@
 ==============
-People, by Valuehorizon
+Peopl, by Valuehorizon
 ==============
 
 A Django-based People data toolkit. 
 It also includes documentation, test coverage and a good amount of sample data to play around with.
 This app is a part of the Valuehorizon application ecosystem.
+
+Installation
+============
+
+Start by creating a new ``virtualenv`` for your project ::
+
+    mkvirtualenv myproject
+
+Next install ``numpy`` and ``pandas`` and optionally ``scipy`` ::
+
+    pip install numpy==1.8.0
+    pip install scipy==0.13.3
+    pip install pandas==0.13.0
+
+Finally, install ``valuehorizon-people`` using ``pip``::
+
+    pip install valuehorizon-people
 
 Contributing
 ============
