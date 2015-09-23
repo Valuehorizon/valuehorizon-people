@@ -25,7 +25,21 @@ class PersonModelTests(TestCase):
 
 
     def field_tests(self):
-        self.assertEqual(1, 1)
+    	"""
+    	Ensure all fields in _meta.fields are included and correctly named
+    	"""
+        required_fields = [u'id', 'gender', 'title', 'first_name', 'last_name', 'other_names', 'date_of_birth', 'date_of_death', 'profile',
+        'is_deceased', 'date_modified', 'date_created']
+        actual_fields = [field.name for field in Person._meta.fields]
+        self.assertEqual(set(required_fields), set(actual_fields))
+
+    def m2m_field_tests(self):
+	"""
+    	Ensure all fields in _meta.many_to_many are included and correctly named
+    	"""
+    	required_fields = ['nationalities']
+        actual_fields = [field.name for field in Person._meta.many_to_many]
+        self.assertEqual(set(required_fields), set(actual_fields))
 
 
 
