@@ -1,5 +1,5 @@
 ==============
-Peopl, by Valuehorizon
+People, by Valuehorizon
 ==============
 
 A Django-based People data toolkit. 
