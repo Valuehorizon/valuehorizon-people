@@ -49,24 +49,13 @@ class Person(models.Model):
     def __unicode__(self):
         return u'%s' % (unicode(self.full_name))
     
-    def get_verbose_name(self):
-    """
-    Fetch verbose name from _meta. This is useful if we want to do haystack
-    faceting on the model's objects.
-    """
-    return self._meta.verbose_name
-    
-    def get_verbose_name_plural(self):
-    """
-    Fetch plural verbose name from _meta. This is useful if we want to do haystack
-    faceting on the model's objects.
-    """
-    return self._meta.verbose_name_plural
     
     @property
     def age(self, as_at_date=None):
-        if as_at_date == None:
-            as_at_date = date.today()
+        """
+        Compute the person's age
+        """
+        as_at_date = date.today() if as_at_date == None else as_at_date
         
         if self.date_of_birth != None:
             if (as_at_date.month >= self.date_of_birth.month) and (as_at_date.day >= self.date_of_birth.day):
@@ -115,7 +104,7 @@ class Person(models.Model):
         if self.date_of_death != None:
             self.is_deceased = True
             
-        # Since we often copy and paste from strange sources, do some basic cleanup
+        # Since we often copy and paste names from strange sources, do some basic cleanup
         self.first_name = self.first_name.strip()
         self.last_name = self.last_name.strip()
         self.other_names = self.other_names.strip()
