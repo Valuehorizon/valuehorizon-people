@@ -50,11 +50,13 @@ class Person(models.Model):
         return u'%s' % (unicode(self.full_name))
     
     
-    @property
     def age(self, as_at_date=None):
         """
         Compute the person's age
         """
+        if self.date_of_death != None or self.is_deceased == True:
+            return None
+
         as_at_date = date.today() if as_at_date == None else as_at_date
         
         if self.date_of_birth != None:
@@ -70,7 +72,7 @@ class Person(models.Model):
         """
         Return the title and last name
         """
-        return "%s %s" (self.get_title_display(), self.last_name)
+        return "%s %s" % (self.get_title_display(), self.last_name)
     
     @property
     def name(self):
@@ -81,7 +83,7 @@ class Person(models.Model):
         if self.title in ["DR", "SIR", "LORD"]:
             return "%s %s %s" % (self.get_title_display(), self.first_name, self.last_name)
         else:
-            return "%s %s" (self.first_name, self.last_name)
+            return "%s %s" % (self.first_name, self.last_name)
     
     @property
     def full_name(self):
