@@ -35,7 +35,7 @@ class Person(models.Model):
     date_of_death = models.DateField(null=True, blank=True)
     profile = models.TextField(blank=True, help_text="Description of Person")
     is_deceased = models.BooleanField(default=False)
-    other_nationalities = models.ManyToManyField(Country, blank=True, null=True, related_name="nationalities")
+    nationalities = models.ManyToManyField(Country, blank=True, null=True, related_name="nationalities")
     
     # Cached Data
     date_modified = models.DateTimeField(null=True, blank=True, editable=False, auto_now=True)
