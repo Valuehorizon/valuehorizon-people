@@ -1,7 +1,11 @@
+# Import Django libraries
 from django.db import models
+
+# Import Valuehorizon libraries
 from countries.models import Country
 
-
+# Import other libraries
+from datetime import date
 
 class Person(models.Model):
     """
@@ -26,15 +30,14 @@ class Person(models.Model):
 
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    other_names = models.CharField(max_length=255, blank=True, help_text="Middle names, comma separated")
+    other_names = models.CharField(max_length=255, blank=True, help_text="Middle names, space separated")
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField(null=True, blank=True)
     profile = models.TextField(blank=True, help_text="Description of Person")
     is_deceased = models.BooleanField(default=False)
-    nationality = models.ManyToManyField(Country, blank=True, null=True, related_name="nationalities")
+    other_nationalities = models.ManyToManyField(Country, blank=True, null=True, related_name="nationalities")
     
     # Cached Data
-    full_name = models.CharField(max_length=255, blank=True, editable=False)
     date_modified = models.DateTimeField(null=True, blank=True, editable=False, auto_now=True)
     date_created = models.DateTimeField(null=True, blank=True, editable=False, auto_now_add=True)
     
@@ -45,36 +48,65 @@ class Person(models.Model):
 
     def __unicode__(self):
         return u'%s' % (unicode(self.full_name))
-
-    def age(self):
-        from datetime import date
+    
+    def get_verbose_name(self):
+    """
+    Fetch verbose name from _meta. This is useful if we want to do haystack
+    faceting on the model's objects.
+    """
+    return self._meta.verbose_name
+    
+    def get_verbose_name_plural(self):
+    """
+    Fetch plural verbose name from _meta. This is useful if we want to do haystack
+    faceting on the model's objects.
+    """
+    return self._meta.verbose_name_plural
+    
+    @property
+    def age(self, as_at_date=None):
+        if as_at_date == None:
+            as_at_date = date.today()
+        
         if self.date_of_birth != None:
-            today = date.today()
-            dob = self.date_of_birth
-            if (today.month > dob.month) and (today.day > dob.day):
-                return (today.year - dob.year)
+            if (as_at_date.month >= self.date_of_birth.month) and (as_at_date.day >= self.date_of_birth.day):
+                return (as_at_date.year - self.date_of_birth.year)
             else:
-                return ((today.year - dob.year) -1)
+                return ((as_at_date.year - self.date_of_birth.year) -1)
         else:
             return None
-        
+    
+    @property
+    def short_name(self):
+        """
+        Return the title and last name
+        """
+        return "%s %s" (self.get_title_display(), self.last_name)
+    
+    @property
     def name(self):
         """
         Return the person's name. If we have special titles, use them, otherwise,
         don't include the title.
         """
-        
-        if self.title == "DR" or self.title == "SIR" or self.title == "LORD":
-            return str(self.get_title_display()) + " " + str(self.first_name)  + " " + str(self.last_name)
+        if self.title in ["DR", "SIR", "LORD"]:
+            return "%s %s %s" % (self.get_title_display(), self.first_name, self.last_name)
         else:
-            return str(self.first_name)  + " " + str(self.last_name)
+            return "%s %s" (self.first_name, self.last_name)
+    
+    @property
+    def full_name(self):
+        """
+        Return the title and full name
+        """
+        return "%s %s %s %s" % (self.get_title_display(), 
+                                self.first_name,
+                                self.other_names.replace(",", ""),
+                                self.last_name)
     
     def get_absolute_url(self):
         return ('person_profile', (), { 'person_id': self.id})
     get_absolute_url = models.permalink(get_absolute_url)
-    
-        
-    
     
     def save(self, *args, **kwargs):
         """
@@ -87,10 +119,7 @@ class Person(models.Model):
         self.first_name = self.first_name.strip()
         self.last_name = self.last_name.strip()
         self.other_names = self.other_names.strip()
-        self.full_name = str(self.name())
-        self.profile = self.profile.encode('ascii', 'ignore').encode('utf8')
         
-            
         # Call save method
         super(Person, self).save(*args, **kwargs) # Call the "real" save() method.
             
