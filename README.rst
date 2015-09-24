@@ -2,6 +2,14 @@
 People, by Valuehorizon
 ==============
 
+.. image:: https://travis-ci.org/Valuehorizon/valuehorizon-people.svg?branch=master
+   :target: https://travis-ci.org/Valuehorizon/valuehorizon-people
+.. image:: https://coveralls.io/repos/Valuehorizon/valuehorizon-people/badge.svg
+   :target: https://coveralls.io/r/Valuehorizon/valuehorizon-people
+.. image:: https://codeclimate.com/github/Valuehorizon/valuehorizon-people/badges/gpa.svg
+   :target: https://codeclimate.com/github/Valuehorizon/valuehorizon-people
+
+
 A Django-based People data toolkit. 
 It also includes documentation, test coverage and a good amount of sample data to play around with.
 This app is a part of the Valuehorizon application ecosystem.
