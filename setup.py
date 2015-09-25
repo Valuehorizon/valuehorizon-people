@@ -33,7 +33,7 @@ setup(
     keywords='django, app, reusable, people, valuehorizon',
     author='Quincy Alexander',
     author_email='qalexander@valuehorizon.com',
-    url="https://https://github.com/Valuehorizon/valuehorizon-people",
+    url="https://github.com/Valuehorizon/valuehorizon-people",
     packages=find_packages(),
     include_package_data=True,
     install_requires=install_requires,
