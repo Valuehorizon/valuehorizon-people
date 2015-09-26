@@ -31,6 +31,11 @@ Finally, install ``valuehorizon-people`` using ``pip``::
 
     pip install valuehorizon-people
 
+Q: 
+    Why do we require all these numerical computation packages? It seems somewhat unnecessary.
+A: 
+    It might be a bit tedious to compile these packages. However, this app depends on other apps that require time series functionality. Bear with us - the end result is a pretty powerful solution.
+
 Contributing
 ============
 
