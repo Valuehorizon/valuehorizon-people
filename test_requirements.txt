@@ -8,7 +8,7 @@ mixer
 mock
 south
 tox
-Django==1.8.1
+Django==1.11.28
 numpy==1.9.2
 pandas==0.13.0
 lxml==3.4.4
